@@ -1,0 +1,49 @@
+<html>
+<body>
+<p id="out">Test</p>
+
+<script>
+var config;
+// for widevine
+config = [{
+  "initDataTypes": ["cenc"],
+  "sessionTypes": ["temporary"],
+  "audioCapabilities": [{
+    "contentType": "audio/mp4;codecs=\"mp4a.40.2\"",
+    "robustness": "SW_SECURE_CRYPTO"
+  }],
+  "videoCapabilities": [{
+    "contentType": "video/mp4;codecs=\"avc1.42E01E\"",
+    "robustness": "SW_SECURE_CRYPTO"
+  }]
+}];
+
+setTimeout(testWidevine, 5000); // waiting a bit extra does not seem to make a difference
+
+function testWidevine() {
+    log('test widevine');
+    try {
+      navigator.
+      requestMediaKeySystemAccess("com.widevine.alpha", config).
+      then(function(mediaKeySystemAccess) {
+        console.log('widevine support ok', mediaKeySystemAccess);
+        log('widevine supported!');
+      }).catch(function(e) {
+        console.log('no widevine support, rejected');
+        console.log(e);
+        log('no widevine support - rejected');
+      });
+    } catch (e) {
+      console.log('no widevine support caught exception');
+      console.log(e);
+      log('no widevine support');
+    }
+}
+
+function log(s) {
+    document.querySelector('#out').innerHTML = s;
+}
+
+</script>
+</body>
+</html>
